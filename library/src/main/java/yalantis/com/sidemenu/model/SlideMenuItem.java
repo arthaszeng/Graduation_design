@@ -1,11 +1,8 @@
 package yalantis.com.sidemenu.model;
 
-import yalantis.com.sidemenu.interfaces.Resourceble;
+import yalantis.com.sidemenu.interfaces.Resourceable;
 
-/**
- * Created by Konstantin on 23.12.2014.
- */
-public class SlideMenuItem implements Resourceble {
+public class SlideMenuItem implements Resourceable {
     private String name;
     private int imageRes;
 

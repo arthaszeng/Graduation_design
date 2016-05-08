@@ -1,38 +1,44 @@
 package yalantis.com.sidemenu.util;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import yalantis.com.sidemenu.R;
 import yalantis.com.sidemenu.animation.FlipAnimation;
-import yalantis.com.sidemenu.interfaces.Resourceble;
+import yalantis.com.sidemenu.interfaces.Resourceable;
 import yalantis.com.sidemenu.interfaces.ScreenShotable;
+import yalantis.com.sidemenu.model.SlideMenuItem;
+import yalantis.com.sidemenu.sample.WordMenuItem;
 
 /**
  * Created by Konstantin on 12.01.2015.
  */
-public class ViewAnimator<T extends Resourceble> {
+public class ViewAnimator<T extends Resourceable> {
     private final int ANIMATION_DURATION = 175;
     public static final int CIRCULAR_REVEAL_ANIMATION_DURATION = 500;
 
     private Activity activity;
-    private List<T> list;
+    private List<SlideMenuItem> list;
+    private List<WordMenuItem> wordList;
 
     private List<View> viewList = new ArrayList<>();
     private ScreenShotable screenShotable;
     private DrawerLayout drawerLayout;
     private ViewAnimatorListener animatorListener;
 
-    public ViewAnimator(Activity activity, List<T> items,ScreenShotable screenShotable, final DrawerLayout drawerLayout, ViewAnimatorListener animatorListener){
+    public ViewAnimator(Activity activity, List<SlideMenuItem> items, List<WordMenuItem> wordList, ScreenShotable screenShotable, final DrawerLayout drawerLayout, ViewAnimatorListener animatorListener){
         this.activity = activity;
         this.list = items;
+        this.wordList = wordList;
         this.screenShotable = screenShotable;
         this.drawerLayout = drawerLayout;
         this.animatorListener = animatorListener;
@@ -55,6 +61,7 @@ public class ViewAnimator<T extends Resourceble> {
                 }
             });
             ((ImageView) viewMenu.findViewById(R.id.menu_item_image)).setImageResource(list.get(i).getImageRes());
+            ((TextView) viewMenu.findViewById(R.id.menuname)).setText(wordList.get(i).getStringRes());
             viewMenu.setVisibility(View.GONE);
             viewMenu.setEnabled(false);
             viewList.add(viewMenu);
@@ -160,14 +167,14 @@ public class ViewAnimator<T extends Resourceble> {
         view.startAnimation(rotation);
     }
 
-    private void switchItem(Resourceble slideMenuItem, int topPosition) {
+    private void switchItem(Resourceable slideMenuItem, int topPosition) {
         this.screenShotable = animatorListener.onSwitch(slideMenuItem, screenShotable, topPosition);
         hideMenuContent();
     }
 
     public interface ViewAnimatorListener {
 
-        public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position);
+        public ScreenShotable onSwitch(Resourceable slideMenuItem, ScreenShotable screenShotable, int position);
 
         public void disableHomeButton();
 
